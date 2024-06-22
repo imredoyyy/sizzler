@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, Suspense } from "react";
 import { CartContext } from "@/provider/AppContext";
 import Container from "@/components/layout/Container";
 import { useParams } from "next/navigation";
@@ -49,7 +49,18 @@ const OrderPage = () => {
   }, [viewingOrder]);
 
   return (
-    <>
+    <Suspense
+      fallback={
+        <div className="grid min-h-screen w-full place-items-center">
+          <ClipLoader
+            color="#f13a00"
+            size={60}
+            loading={loading}
+            cssOverride={override}
+          />
+        </div>
+      }
+    >
       {loading && (
         <div className="grid min-h-screen w-full place-items-center">
           <ClipLoader
@@ -100,7 +111,7 @@ const OrderPage = () => {
           </div>
         </div>
       </Container>
-    </>
+    </Suspense>
   );
 };
 
