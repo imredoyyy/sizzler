@@ -54,7 +54,7 @@ const LogIn = () => {
           <h2 className="text-center text-2xl font-bold text-orange-50 md:text-4xl">
             Login to your account
           </h2>
-          <p className="text-black-100 text-center">
+          <p className="text-center text-black-100">
             Please fill in the details to get started
           </p>
           <p className="min-h-4 text-center">{errorMessage}</p>
@@ -119,6 +119,7 @@ const LogIn = () => {
             <Button
               type="submit"
               radius="sm"
+              isLoading={loginProgress}
               disabled={loginProgress}
               className={mergeClasses(
                 "py-3 text-base font-medium disabled:cursor-not-allowed disabled:bg-orange-100",
@@ -129,9 +130,9 @@ const LogIn = () => {
           </div>
           <div className="flex flex-col gap-5">
             <div className="flex items-center gap-2">
-              <div className="bg-black-100/50 h-px w-full" />
+              <div className="h-px w-full bg-black-100/50" />
               <p className="text-sm">Or</p>
-              <div className="bg-black-100/50 h-px w-full" />
+              <div className="h-px w-full bg-black-100/50" />
             </div>
 
             <div>
@@ -141,9 +142,10 @@ const LogIn = () => {
                   signIn("google", { callbackUrl: "/" });
                 }}
                 size="md"
+                radius="sm"
                 type="submit"
                 className={mergeClasses(
-                  "text-black-100 active:text-black-50 md:hover:text-black-50 w-full border border-slate-300 bg-transparent transition-colors duration-300 hover:border-orange-50/60 active:bg-orange-100/30 md:hover:bg-orange-100/30",
+                  "w-full border border-slate-300 bg-transparent text-black-100 transition-colors duration-300 hover:border-orange-50/60 active:bg-orange-100/30 active:text-black-50 md:hover:bg-orange-100/30 md:hover:text-black-50",
                 )}
               >
                 <Image src={GoogleLogo} alt="Google" height={32} width={32} />
@@ -152,12 +154,12 @@ const LogIn = () => {
             </div>
           </div>
         </form>
-        <div className="border-black-100/50 min-w-[300px] border-t py-3">
-          <p className="text-black-100 whitespace-nowrap text-center">
+        <div className="min-w-[300px] border-t border-black-100/50 py-3">
+          <p className="whitespace-nowrap text-center text-black-100">
             Don&apos;t have an account? &nbsp;
             <Link
               href={"/register"}
-              className="text-black-50 font-medium underline underline-offset-4 transition-colors duration-200 hover:text-orange-50"
+              className="font-medium text-black-50 underline underline-offset-4 transition-colors duration-200 hover:text-orange-50"
             >
               Register
             </Link>

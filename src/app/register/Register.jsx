@@ -195,6 +195,7 @@ const Register = () => {
             <Button
               type="submit"
               size="md"
+              isLoading={creatingUser}
               radius="sm"
               disabled={creatingUser}
               className={mergeClasses(
