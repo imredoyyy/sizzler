@@ -30,9 +30,8 @@ const ChooseUs = () => {
               <div key={i} className="flex flex-col items-center gap-2">
                 <Counter
                   className="text-center text-3xl font-bold text-orange-50 md:text-5xl"
-                  start={0}
-                  end={data.count}
-                  duration={1500}
+                  target={data.count}
+                  duration={1000}
                   suffix={i === Choose_Us_Data.length - 1 ? "k+" : "+"}
                 />
                 <h4 className="text-center font-bold text-white-100 sm:text-xl lg:text-2xl">

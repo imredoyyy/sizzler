@@ -3,6 +3,7 @@
 import { useContext, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 import Container from "@/components/layout/Container";
 import { CartContext } from "@/provider/AppContext";
@@ -13,8 +14,12 @@ import { Plus, Minus, Trash } from "lucide-react";
 import EmptyCart from "/public/empty-cart.png";
 import toast from "react-hot-toast";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const Cart = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
   const {
     cartProducts,
     removeFromCart,
@@ -60,6 +65,11 @@ const Cart = () => {
   };
 
   const proceedToCheckout = async () => {
+    if (!session) {
+      toast.error("Please login to proceed");
+      return router.push("/login");
+    }
+
     const checkoutPromise = fetch("/api/checkout", {
       method: "POST",
       headers: {
@@ -111,7 +121,7 @@ const Cart = () => {
                 />
               </div>
               <div className="flex flex-col items-center gap-8">
-                <h1 className="text-center text-3xl font-bold text-orange-50 md:text-5xl">
+                <h1 className="text-3xl font-bold text-center text-orange-50 md:text-5xl">
                   Your cart is empty
                 </h1>
 
@@ -136,7 +146,7 @@ const Cart = () => {
                       exit={{ opacity: 0, scale: 0.8 }}
                       transition={{ duration: 0.4, ease: "easeOut" }}
                     >
-                      <div className="flex w-full justify-center" layout>
+                      <div className="flex justify-center w-full" layout>
                         <div className="flex size-[100px] justify-center rounded-full bg-slate-300 p-1">
                           <Image
                             src={product.image}
@@ -148,7 +158,7 @@ const Cart = () => {
                           />
                         </div>
                       </div>
-                      <div className="flex w-full items-center justify-between gap-4">
+                      <div className="flex items-center justify-between w-full gap-4">
                         <div className="flex flex-col gap-2.5">
                           <Link
                             href={`/products/${product.category}/${product.id}`}
@@ -195,7 +205,7 @@ const Cart = () => {
                           >
                             <Minus className="size-5 md:size-6" />
                           </button>
-                          <p className="grid h-full w-full place-items-center bg-slate-100 text-lg font-semibold">
+                          <p className="grid w-full h-full text-lg font-semibold place-items-center bg-slate-100">
                             {product.quantity}
                           </p>
                           <button
@@ -232,13 +242,13 @@ const Cart = () => {
               </div>
 
               {cartProducts && cartProducts.length > 0 && (
-                <div className="h-fit rounded-md border border-orange-100 px-3 py-5">
+                <div className="px-3 py-5 border border-orange-100 rounded-md h-fit">
                   <div className="flex flex-col gap-4">
                     <div className="text-lg font-bold text-orange-50 lg:text-xl">
                       Order Summary
                     </div>
                     <div className="flex flex-col gap-2">
-                      <div className="flex flex-col gap-2 border-b border-slate-300 pb-2">
+                      <div className="flex flex-col gap-2 pb-2 border-b border-slate-300">
                         <div className="flex items-center justify-between">
                           <div>Items ({getTotalQuantity(cartProducts)}):</div>
                           <div>${totalAmount().totalWithoutTax}</div>

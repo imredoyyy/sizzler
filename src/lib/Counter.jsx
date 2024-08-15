@@ -1,38 +1,43 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
-const Counter = ({ start = 0, end, duration = 2000, suffix, className }) => {
+const Counter = ({
+  start = 1,
+  target,
+  duration = 1500,
+  suffix = "",
+  className,
+}) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.1,
   });
 
   const [count, setCount] = useState(start);
 
   useEffect(() => {
+    const increment = () => {
+      const stepTime = Math.abs(Math.floor(duration / target));
+
+      if (start < target) {
+        start++;
+        setCount(start);
+
+        setTimeout(() => {
+          increment();
+        }, stepTime);
+      }
+    };
+
+    // Run increment function if it's in view
     if (inView) {
-      let startTimestamp = null;
-      const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = timestamp - startTimestamp;
-        const newCount = Math.min(
-          start + (progress / duration) * (end - start),
-          end,
-        );
-        setCount(newCount);
-        if (progress < duration) {
-          window.requestAnimationFrame(step);
-        }
-      };
-      window.requestAnimationFrame(step);
+      increment();
     }
-  }, [inView, start, end, duration]);
+  }, [inView, start, target, duration]);
 
   return (
     <div ref={ref} className={className}>
-      {Math.floor(count)}
-      {suffix}
+      {count.toString() + suffix}
     </div>
   );
 };

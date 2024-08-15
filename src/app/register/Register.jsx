@@ -29,7 +29,7 @@ const Register = () => {
     setErrorMessage("");
 
     // If any of the input fields are empty or password length is
-    //less than 6 characters, show an error message and return immediately
+    //less than 6 characters, show an error message and return
     if (!name || !email || !password) {
       toast.error("All fields are required");
       setCreatingUser(false);
